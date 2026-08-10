@@ -2,9 +2,9 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_IMAGE  = "your-docker-hub-username/static-website"
+    DOCKER_IMAGE  = "shamnaddockerhub/static-website"
     GIT_REPO_NAME = "python-flask-app"
-    GIT_USER_NAME = "Doom710"
+    GIT_USER_NAME = "shamnadbakkerkt"
   }
 
   options {
@@ -15,14 +15,15 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/Doom710/python-flask-app'
+          sh 'echo "Checkout Successfull"'
+        // git branch: 'main', url: 'https://github.com/Doom710/python-flask-app'
       }
     }
 
     stage('SonarQube Analysis') {
       steps {
         script {
-          def scannerHome = tool 'sonarscanner'
+          def scannerHome = tool 'SonarScanner'
           withSonarQubeEnv('sonarqube') {
             sh """
               ${scannerHome}/bin/sonar-scanner \\
@@ -56,10 +57,10 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
           sh '''
-            git config user.email "xyz@gmail.com"
+            git config user.email "shamnadkt@gmail.com"
             git config user.name "${GIT_USER_NAME}"
 
-            sed -i "s|image: .*|image: ${DOCKER_IMAGE}:${BUILD_NUMBER}|g" k8s/deployment.yaml
+            sed -i "s|image: .*|image: shamnaddockerhub/static-website:${BUILD_NUMBER}|g" k8s/deployment.yaml
 
             git add k8s/deployment.yaml
             git commit -m "Update flask app image tag to ${BUILD_NUMBER} [skip ci]" || echo "No changes to commit"
