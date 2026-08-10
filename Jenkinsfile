@@ -60,7 +60,7 @@ pipeline {
             git config user.email "shamnadkt@gmail.com"
             git config user.name "${GIT_USER_NAME}"
 
-            sed -i "s|image: .*|image: shamnaddockerhub/static-website:${BUILD_NUMBER}|g" k8s/deployment.yaml
+            sed -i "s|image: .*|${DOCKER_IMAGE}:${BUILD_NUMBER}|g" k8s/deployment.yaml
 
             git add k8s/deployment.yaml
             git commit -m "Update flask app image tag to ${BUILD_NUMBER} [skip ci]" || echo "No changes to commit"
