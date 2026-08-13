@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: flask-container
-        image: shamnaddockerhub/python-flask-app:7
+        shamnaddockerhub/python-flask-app:9
         
         imagePullPolicy: Always
         ports:
